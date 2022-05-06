@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.clientchat.controllers.ClientController">
+    <top>
+        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Онлайн чат" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="System Bold Italic" size="15.0" />
+            </font>
+        </Label>
+    </top>
+    <bottom>
+        <HBox prefHeight="25.0" BorderPane.alignment="CENTER">
+            <TextField fx:id="messageTextArea" onAction="#sendMessage" prefHeight="25.0" prefWidth="485.0">
+                <HBox.margin>
+                    <Insets left="5.0"/>
+                </HBox.margin>
+            </TextField>
+            <Button fx:id="sendMassageButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false"
+                    onAction="#sendMessage" prefHeight="25.0" prefWidth="87.0" text="Отправить">
+                <HBox.margin>
+                    <Insets left="20.0" right="5.0"/>
+                </HBox.margin>
+                <font>
+                    <Font name="System Italic" size="12.0"/>
+                </font>
+            </Button>
+        </HBox>
+    </bottom>
+    <center>
+        <SplitPane dividerPositions="0.9904942965779466" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0"
+                   BorderPane.alignment="CENTER">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                <TextArea fx:id="chatTextArea" editable="false" prefHeight="200.0" prefWidth="200.0"
+                          style="-fx-border-width: 2px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0"/>
+        </SplitPane>
+    </center>
+    <left>
+        <ListView fx:id="userList" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+    </left>
+</BorderPane>

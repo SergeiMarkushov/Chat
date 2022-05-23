@@ -14,8 +14,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 public class AuthController {
 
@@ -51,17 +50,6 @@ public class AuthController {
     }
 
     public void initializeMessageHandler() {
-
-        Timer timeOut = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(()->{
-                    ClientChat.getInstance().timeOutExit();
-                });
-            }
-        };
-        timeOut.schedule(timerTask,120_000);
 
         readMessageListener = getNetwork().addReadMessageListener(new ReadMessageListener() {
             @Override

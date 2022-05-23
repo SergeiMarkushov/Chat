@@ -40,6 +40,23 @@ public class Dialogs {
         }
 
     }
+    public enum AuthTimeout{
+        AUTH_TIMEOUT("Время на авторизацию в чате истекло. Повторите вход");
+
+        private static final String TITLE = "Время на авторизацию истекло";
+        private static final String TYPE = TITLE;
+
+        private final String message;
+
+        AuthTimeout(String message) {
+            this.message = message;
+        }
+
+        public void show(){
+            showDialog(Alert.AlertType.WARNING, TITLE, TITLE, message);
+        }
+    }
+
 
     private static void showDialog(Alert.AlertType dialogType, String title, String type, String message) {
         Alert alert = new Alert(dialogType);

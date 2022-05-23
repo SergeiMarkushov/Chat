@@ -9,8 +9,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import com.example.clientchat.model.AuthTimeout;
 
 import java.io.IOException;
+import java.util.Timer;
 
 public class ClientChat extends Application {
 
@@ -21,6 +23,9 @@ public class ClientChat extends Application {
 
     private FXMLLoader chatWindowLoader;
     private FXMLLoader authLoader;
+
+    private Timer mTimer;
+    private AuthTimeout mMyTimerTask;
 
 
     @Override
@@ -39,12 +44,18 @@ public class ClientChat extends Application {
     }
 
     private void initChatWindow() throws IOException {
+        if (mTimer != null) {
+            mTimer.cancel();
+        }
+        mTimer = new Timer(true);
+        mMyTimerTask = new AuthTimeout();
         chatWindowLoader = new FXMLLoader();
         chatWindowLoader.setLocation(ClientChat.class.getResource("chat-template.fxml"));
 
         Parent root = chatWindowLoader.load();
         chatStage.setScene(new Scene(root));
         getChatController().initializeMessageHandler();
+        mTimer.schedule(mMyTimerTask, 0);
     }
 
     private void initAuthDialog() throws IOException {
@@ -92,9 +103,4 @@ public class ClientChat extends Application {
     public static ClientChat getInstance() {
         return INSTANCE;
     }
-    public void timeOutExit(){
-        getAuthController().close();
-        getAuthStage().close();
-    }
-
 }

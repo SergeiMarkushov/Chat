@@ -56,7 +56,8 @@ public class ClientHandler {
                 AuthCommandData data = (AuthCommandData) command.getData();
                 String login = data.getLogin();
                 String password = data.getPassword();
-                String userName = this.server.getAuthService().getUsernameByLoginAndPassword(login, password);
+//                String userName = this.server.getAuthService().getUsernameByLoginAndPassword(login, password);
+                String userName = this.server.getAuthService().getNickByLoginAndPass(login,password);
                 if (userName == null) {
                     sendCommand(Command.errorCommand("Некорректные имя пользователя или пароль"));
                 } else if (server.isUserNameBusy(userName)) {

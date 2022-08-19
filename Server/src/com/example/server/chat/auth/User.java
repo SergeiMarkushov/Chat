@@ -13,9 +13,11 @@ public class User {
         this.username = username;
     }
 
-    public User(String login, String password) {
-        this(login, password, null);
-    }
+//    public User(String login, String password) {
+//        this(login, password, null);
+//    }
+// username == nickname is not null
+
 
     @Override
     public boolean equals(Object o) {

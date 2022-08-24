@@ -21,6 +21,9 @@ public class Dialogs {
         public void show() {
             showDialog(Alert.AlertType.ERROR, TITLE, TITLE, message);
         }
+        public void show(String message) {
+            showDialog(Alert.AlertType.ERROR, TITLE, TITLE, message);
+        }
     }
 
     public enum NetworkError {
@@ -55,6 +58,23 @@ public class Dialogs {
         public void show(){
             showDialog(Alert.AlertType.WARNING, TITLE, TITLE, message);
         }
+    }
+
+    public enum AboutDialog {
+        INFO(String.format("Создатель чата: %s %n Используемые технологии: %s", "Маркушов Сергей", "Java 11, JavaFX, Maven"));
+
+        private final String message;
+        private static final String TITLE = "Информация о программе";
+        private static final String TYPE = "Онлайн чат для локального обмена сообщениями";
+
+        AboutDialog(String message) {
+            this.message = message;
+        }
+
+        public void show() {
+            showDialog(Alert.AlertType.INFORMATION, TITLE, TYPE, message);
+        }
+
     }
 
 

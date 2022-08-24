@@ -7,5 +7,7 @@ public enum CommandType {
     CLIENT_MESSAGE,
     ERROR,
     AUTH_OK,
-    UPDATE_USERS_LIST
+    UPDATE_USERS_LIST,
+    END,
+    UPDATE_USERNAME
 }

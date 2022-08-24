@@ -5,6 +5,7 @@ import com.example.command.CommandType;
 import com.example.command.commands.commands.AuthCommandData;
 import com.example.command.commands.commands.PrivateMessageCommandData;
 import com.example.command.commands.commands.PublicMessageCommandData;
+import com.example.command.commands.commands.UpdateUsernameCommandData;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -102,6 +103,14 @@ public class ClientHandler {
                     PublicMessageCommandData data = (PublicMessageCommandData) command.getData();
                     processMessage(data.getMessage());
                     break;
+                case UPDATE_USERNAME: {
+                    UpdateUsernameCommandData dataU = (UpdateUsernameCommandData) command.getData();
+                    String newUsername = dataU.getUsername();
+                    server.getAuthService().updateUsername(userName, newUsername);
+                    userName = newUsername;
+                    server.notifyUserListUpdated();
+                    break;
+                }
             }
         }
     }

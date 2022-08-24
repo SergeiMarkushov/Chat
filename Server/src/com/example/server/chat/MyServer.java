@@ -52,7 +52,7 @@ public class MyServer {
         }
     }
 
-    private void notifyUserListUpdated() throws IOException {
+    public void notifyUserListUpdated() throws IOException {
         List<String> users = new ArrayList<>();
         for (ClientHandler client : clients) {
             users.add(client.getUserName());

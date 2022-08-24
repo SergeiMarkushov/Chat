@@ -4,6 +4,7 @@ import com.example.clientchat.ClientChat;
 import com.example.clientchat.dialogs.Dialogs;
 import com.example.clientchat.model.Network;
 import com.example.clientchat.model.ReadMessageListener;
+import com.example.clientchat.service.ChatHistory;
 import com.example.command.Command;
 import com.example.command.CommandType;
 import com.example.command.commands.commands.ClientMessageCommandData;
@@ -21,6 +22,9 @@ import java.util.Optional;
 
 public class ClientController {
 
+    private static final int LAST_HISTORY_ROWS_NUMBER = 100;
+
+
     @FXML
     public TextField messageTextArea;
 
@@ -28,12 +32,13 @@ public class ClientController {
     public TextArea chatTextArea;
 
     @FXML
-    public ListView userList;
+    public ListView<String> userList;
 
     @FXML
     public Button sendMassageButton;
 
     private ClientChat application;
+    private ChatHistory chatHistoryService;
 
     public void sendMessage() {
         String message = messageTextArea.getText().trim();
@@ -66,6 +71,10 @@ public class ClientController {
         messageTextArea.clear();
     }
 
+    public void createChatHistory(){
+        this.chatHistoryService = new ChatHistory(Network.getInstance().getCurrentUsername());
+    }
+
     public void appendMessageToChat(String sender, String message) {
         String currentText = chatTextArea.getText();
 
@@ -84,6 +93,7 @@ public class ClientController {
         chatTextArea.clear();
 
         String newMessage = chatTextArea.getText(currentText.length(), chatTextArea.getLength());
+        chatHistoryService.appendText(newMessage);
 
 
     }
@@ -100,6 +110,10 @@ public class ClientController {
         Network.getInstance().addReadMessageListener(new ReadMessageListener() {
             @Override
             public void processReceivedCommand(Command command) {
+                if(chatHistoryService == null){
+                    createChatHistory();
+                    loadChatHistory();
+                }
                 if (command.getType() == CommandType.CLIENT_MESSAGE) {
                     ClientMessageCommandData data = (ClientMessageCommandData) command.getData();
                     appendMessageToChat(data.getSender(), data.getMessage());
@@ -130,7 +144,18 @@ public class ClientController {
         }
     }
 
-    public void about (javafx.event.ActionEvent actionEvent){
+    private void loadChatHistory(){
+        String rows = chatHistoryService.loadLastRows(LAST_HISTORY_ROWS_NUMBER);
+        chatTextArea.clear();
+        chatTextArea.setText(rows);
+    }
+
+    public void about (ActionEvent actionEvent){
         Dialogs.AboutDialog.INFO.show();
+    }
+
+    public void closeChat(ActionEvent actionEvent){
+        chatHistoryService.close();
+        ClientChat.INSTANCE.getChatStage().close();
     }
 }

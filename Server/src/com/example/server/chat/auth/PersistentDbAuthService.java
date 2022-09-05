@@ -1,8 +1,13 @@
 package com.example.server.chat.auth;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.*;
 
 public class PersistentDbAuthService implements InterfaceAuthService{
+
+    private static final Logger LOGGER = LogManager.getLogger(PersistentDbAuthService.class);
 
     private static final String DB = "jdbc:sqlite:chatUsers.db";
     private Connection connection;
@@ -13,14 +18,14 @@ public class PersistentDbAuthService implements InterfaceAuthService{
     @Override
     public void start() {
         try {
-            System.out.println("Creating DB connection....");
+            LOGGER.info("Creating DB connection....");
             connection = DriverManager.getConnection(DB);
-            System.out.println("DB connection successfully");
+            LOGGER.info("DB connection successfully");
             getUsernameStatement = createGetUsernameStatement();
             updateUsernameStatement =createUpdateUsernameStatement();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            System.err.println("Filed to connect to DB " + DB);
+            LOGGER.error("Filed to connect to DB {}", DB);
             throw new RuntimeException("Filed to start auth service");
         }
     }
@@ -40,7 +45,7 @@ public class PersistentDbAuthService implements InterfaceAuthService{
             resultSet.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            System.err.println("Filed to fetch username from DB");
+            LOGGER.error("Filed to fetch username from DB");
         }
         return username;
     }
@@ -49,12 +54,12 @@ public class PersistentDbAuthService implements InterfaceAuthService{
     public void stop() {
         if(connection != null){
             try{
-                System.out.println("Closing connection");
+                LOGGER.info("Closing connection");
                 connection.close();
-                System.out.println("Connection is closed");
+                LOGGER.info("Connection is closed");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-                System.err.println("Filed to close connection");
+                LOGGER.error("Filed to close connection");
                 throw new RuntimeException("Filed to stop auth service");
             }
         }
@@ -66,9 +71,10 @@ public class PersistentDbAuthService implements InterfaceAuthService{
             updateUsernameStatement.setString(1, newUsername);
             updateUsernameStatement.setString(2,currentUsername);
             int result = updateUsernameStatement.executeUpdate();
+            LOGGER.info("Update username. Update rows {}", result);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            System.err.printf("Filed to update username. Current name: %s; New username: %s%n", currentUsername, newUsername);
+            LOGGER.error("Filed to update username. Current name: {}; New username: {}%n", currentUsername, newUsername);
         }
 
     }

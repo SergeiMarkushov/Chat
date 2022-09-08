@@ -18,9 +18,9 @@ public class PersistentDbAuthService implements InterfaceAuthService{
     @Override
     public void start() {
         try {
-            LOGGER.info("Creating DB connection....");
+            LOGGER.debug("Creating DB connection....");
             connection = DriverManager.getConnection(DB);
-            LOGGER.info("DB connection successfully");
+            LOGGER.debug("DB connection successfully");
             getUsernameStatement = createGetUsernameStatement();
             updateUsernameStatement =createUpdateUsernameStatement();
         } catch (SQLException throwables) {

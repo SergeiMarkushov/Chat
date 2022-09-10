@@ -1,14 +1,21 @@
 package com.example.clientchat.model;
 
 import com.example.command.Command;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 
+
 public class Network {
+
+    private static final Logger LOGGER = LogManager.getLogger(Network.class);
 
     private List<ReadMessageListener> listeners = new CopyOnWriteArrayList<>();
     private String currentUsername;
@@ -55,6 +62,7 @@ public class Network {
             return true;
         } catch (IOException e) {
             e.printStackTrace();
+            LOGGER.error("Не удалось установить соединение");
             return false;
         }
     }
@@ -67,7 +75,7 @@ public class Network {
         try {
             outputStream.writeObject(command);
         } catch (IOException e) {
-            System.err.println("Не удалось отправить сообщение на сервер");
+            LOGGER.error("Не удалось отправить сообщение на сервер");
             e.printStackTrace();
             throw e;
         }
@@ -79,7 +87,7 @@ public class Network {
         try {
             command = (Command) inputStream.readObject();
         } catch (ClassNotFoundException e) {
-            System.err.println("Failed to read Command class");
+            LOGGER.error("Failed to read Command class");
             e.printStackTrace();
         }
 

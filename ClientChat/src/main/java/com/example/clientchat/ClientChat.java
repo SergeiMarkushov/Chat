@@ -42,20 +42,6 @@ public class ClientChat extends Application {
         getChatStage().show();
         getAuthStage().show();
         getAuthController().initializeMessageHandler();
-    }
-
-    private void connectToServer(ClientController clientController) {
-        boolean result = Network.getInstance().connect();
-
-        if (!result) {
-            String errorMessage = CONNECTION_ERROR_MESSAGE;
-            System.err.println(errorMessage);
-            showErrorDialog(errorMessage);
-            return;
-        }
-
-
-        clientController.setApplication(this);
 
         this.chatStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
